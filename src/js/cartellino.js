@@ -1,22 +1,23 @@
 import { state } from './state.js';
 
 export class Cartellino {
-    constructor(id, nome, descrizione, tipo, colore, campagna, args) {
-        if(id === undefined){
+    constructor(args) {
+        if(args.id === undefined){
             state.next_id--;
             this.id = state.next_id;
         }else{
-            this.id = id;
-        }        
-        this.nome = nome;
-        this.descrizione = descrizione;
-        this.campagna = campagna;
-        this.colore = colore;
-        this.tipo = tipo;
+            this.id =args.id;
+        }
+        this.nome = args.nome || "";
+        this.descrizione = args.descrizione || "";
+        this.campagna = args.campagna || "";
+        this.colore = args.colore || "";
+        this.tipo = args.tipo || "";
         this.requisiti = args.requisiti || ""; 
         this.fattura = args.fattura || "";
         this.immagine = args.immagine || "";
         this.link = args.link || "";  
+        
         this.element = undefined;
         this.quantity = 0;
         this.listenerDone = false;
@@ -35,17 +36,19 @@ export class Cartellino {
         }else{
             state.selezionati[this.id].quantity = this.quantity;
         }
-        this.render();
+        this.render(this.element.style.order);
     }
 
     minusOne(){
-        this.quantity--;
-        if(this.quantity === 0){
-            delete state.selezionati[this.id];
-        } else {
-            state.selezionati[this.id].quantity = this.quantity;
+        if(this.quantity > 0){
+            this.quantity--;
+            if(this.quantity === 0){
+                delete state.selezionati[this.id];
+            } else {
+                state.selezionati[this.id].quantity = this.quantity;
+            }
+            this.render(this.element.style.order);
         }
-        this.render();
     }
 
     setQuantity(qty){
@@ -53,12 +56,26 @@ export class Cartellino {
         if(this.quantity === 0){
             delete state.selezionati[this.id];
         } else {
-            state.selezionati[this.id].quantity = this.quantity;
+            if(state.selezionati[this.id] === undefined){
+                state.selezionati[this.id] = {quantity: this.quantity};    
+            }else{
+                state.selezionati[this.id].quantity = this.quantity;
+            }
         }
-        this.render();
+        this.render(this.element.style.order);
     }
 
-    render(){
+    setOrder(order){
+        this.element.style.order = order;
+    }
+
+    hide(){
+        this.element.remove();
+    }
+
+    render(int){
+        let order = int || 0;
+
         if(this.element === undefined){
             let template = document.createElement('template');
             template.innerHTML = state.cartellinoHtml;
@@ -67,17 +84,17 @@ export class Cartellino {
         }
 
         this.element.setAttribute('element_id', this.id);
+        this.element.style.order = order;
         this.element.querySelector('[role="crt_nome"]').innerHTML = this.nome;
         this.element.querySelector('[role="crt_descrizione"]').innerHTML = this.descrizione;
         this.element.querySelector('[role="crt_qty"]').value = this.quantity;
         
         if(!this.listenerDone){
-            this.element.querySelector('[role="crt_qty"]').addEventListener('submit', () => {
-                let element_id = this.parentElement.parentElement.getAttibute('element_id');
-                state.cartellini.element_id.setQuantity(this.value);
+            this.element.querySelector('[role="crt_qty"]').addEventListener('keyup', (e) => {
+                this.setQuantity(e.target.value);
             });
             this.element.querySelector('[role="crt_plus"]').addEventListener('click', () => {this.plusOne()});
-            this.element.querySelector('[role="crt_minus"]').addEventListener('click', () => {this.minusOne()});    
+            this.element.querySelector('[role="crt_minus"]').addEventListener('click', () => {this.minusOne()});
             this.listenerDone = true;
         }
         return this.element;

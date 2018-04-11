@@ -1,6 +1,6 @@
-import { state } from './state.js';
-import { Cartellino } from './cartellino.js';
-import { ListaCartellini } from './lista_cartellini.js';
+import { state } from './js/state.js';
+import { Cartellino } from './js/cartellino.js';
+import { ListaCartellini } from './js/lista_cartellini.js';
 //import data from './data/data.json';
 
 state.index.addField('nome');
@@ -32,7 +32,16 @@ let data = {
 
 for (let key = 1; key < 500; key ++){
     let element = data[(key%2)+1];
-    state.cartellini[key] = new Cartellino(key, element.nome, element.descrizione, element.tipo, element.colore, element.campagna, {requisiti: element.requisiti, fattura: element.fattura});
+    state.cartellini[key] = new Cartellino({
+        id: key,
+        nome: element.nome, 
+        descrizione: element.descrizione, 
+        tipo: element.tipo, 
+        colore: element.colore, 
+        campagna: element.campagna, 
+        requisiti: element.requisiti, 
+        fattura: element.fattura
+    });
 }
 
 state.lista = new ListaCartellini();

@@ -1,0 +1,41 @@
+
+#lista_cartellini{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap
+}
+
+.cartellino {
+    display:inline;
+    /*width: 200px;
+    height: 100px;*/
+    margin: 5px;
+    border: 1px solid #000;
+    background-color: #3b3b3b;
+    color: #fff;
+    font: 18px Gabriola, sans-serif, arial;
+}
+
+.crt_details {
+    display: inline-block;
+    width: 75%;
+    height: 95px;
+    margin: 2px;
+}
+
+.qty_modifier {
+    display: inline-block;
+    width: 20%;
+    height: 95px;
+    margin: 2px;
+}
+
+.qty_modifier [role=crt_minus] {
+    width: 100%;
+}
+.qty_modifier [role=crt_qty] {
+    width: 100%;
+}
+.qty_modifier [role=crt_plus] {
+    width: 100%;
+}

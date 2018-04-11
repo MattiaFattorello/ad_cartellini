@@ -1,5 +1,9 @@
-<div role="crt_element">
-    <h3 role="crt_nome"></h3>
-    <p role="crt_descrizione"></p>
-    <div><button role="crt_minus">-</button> <input type="text" role="crt_qty" /> <button role="crt_plus">+</button></div>
+<div class="cartellino" role="crt_element">
+    <div class="crt_details">
+        <h3 role="crt_nome"></h3>
+        <p role="crt_descrizione"></p>
+    </div>
+    <div class="qty_modifier">
+        <button role="crt_minus">-</button><input role="crt_qty" pattern="[0-9]|Backspace|Shift|Arrow(.*)|Delete|End|Home"/><button role="crt_plus">+</button>
+    </div>
 </div>
