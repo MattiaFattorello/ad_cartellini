@@ -43,6 +43,7 @@ div{
     height: 100%;
     width: 5%;
     background: #ff9900;
+    float: left;
 }
 
 #to_print_label span{
@@ -51,9 +52,14 @@ div{
 }
 
 #to_print_list{
-    display: none;
+    display: flex;
     width:95%;
-    height:100%;
+    height:90%;
+}
+
+#print{
+    width: 95%;
+    height: 5%;
 }
 
 #form_new{
@@ -109,16 +115,31 @@ div{
     margin: 2px;
 }
 
-.qty_modifier [role=crt_minus] {
-    width: 100%;
+.qty_modifier div{
+    width:70%;
+    float: left;
 }
+
+.qty_modifier div:first-child{
+    width:30%;
+}
+
+.qty_modifier div button{
+    width:50%;
+}
+
+.qty_modifier div button, .qty_modifier div input[role=crt_qty], .qty_modifier div input[role=crt_qty]:focus {
+    -webkit-appearance: none;
+    margin:0 auto;
+    background: #3b3b3b;
+    color: #f4f4f4;
+    border: none;
+    outline: none;
+}
+
 .qty_modifier [role=crt_qty] {
     width: 100%;
 }
-.qty_modifier [role=crt_plus] {
-    width: 100%;
-}
-
 
 *::-webkit-scrollbar-track {
 	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);

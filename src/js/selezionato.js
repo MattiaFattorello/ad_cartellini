@@ -19,9 +19,9 @@ export class Cartellino {
         this.link = args.link || "";  
         
         this.element = undefined;
-        this.selezionato = undefined;
         this.quantity = 0;
         this.listenerDone = false;
+
         state.index.addDoc({
             "id": this.id,
             "nome": this.nome,
@@ -31,11 +31,12 @@ export class Cartellino {
 
     plusOne(){
         this.quantity++;
-        if(this.quantity === 1){
-            state.selezionati.push(this.id); 
+        if(this.quantity == 1){
+            state.selezionati[this.id] = {quantity: this.quantity};    
+        }else{
+            state.selezionati[this.id].quantity = this.quantity;
         }
         this.render(this.element.style.order);
-        this.renderSelezionato();
     }
 
     plusFive(){
@@ -48,10 +49,11 @@ export class Cartellino {
         if(this.quantity > 0){
             this.quantity--;
             if(this.quantity === 0){
-                
+                delete state.selezionati[this.id];
+            } else {
+                state.selezionati[this.id].quantity = this.quantity;
             }
             this.render(this.element.style.order);
-            this.renderSelezionato();
         }
     }
 
@@ -62,15 +64,17 @@ export class Cartellino {
     }
 
     setQuantity(qty){
-        if(qty < 1 && this.quantity > 0){
-            state.selezionati.splice(state.selezionati.indexOf(this.id), 1);  
-        }
-        if(this.quantity === 0 && qty > 0){
-            state.selezionati.push(this.id); 
-        }
         this.quantity = qty;
+        if(this.quantity === 0){
+            delete state.selezionati[this.id];
+        } else {
+            if(state.selezionati[this.id] === undefined){
+                state.selezionati[this.id] = {quantity: this.quantity};    
+            }else{
+                state.selezionati[this.id].quantity = this.quantity;
+            }
+        }
         this.render(this.element.style.order);
-        this.renderSelezionato();
     }
 
     setOrder(order){
@@ -108,26 +112,5 @@ export class Cartellino {
             this.listenerDone = true;
         }
         return this.element;
-    }
-
-    renderSelezionato(){
-        let order = -1*this.quantity
-
-        if(this.selezionato === undefined){
-            let template = document.createElement('template');
-            template.innerHTML = state.selezionatoHtml;
-            this.selezionato = template.content.firstChild;
-            document.getElementById('to_print_list').appendChild(this.selezionato);
-        }
-
-        if(this.quantity < 1){
-            this.selezionato.remove();
-        }else{
-            this.selezionato.setAttribute('element_id', this.id);
-            this.selezionato.style.order = order;
-            this.selezionato.querySelector('[role="crt_nome"]').innerHTML = this.nome;
-            this.selezionato.querySelector('[role="crt_descrizione"]').innerHTML = this.descrizione;
-            this.selezionato.querySelector('[role="qty"]').innerText = this.quantity;
-        }
     }
 }
