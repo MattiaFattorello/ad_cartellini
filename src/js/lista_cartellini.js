@@ -1,6 +1,6 @@
-import state from './resources/app/state.js';
+const state = require.main.require('./js/state.js');
 
-export default class ListaCartellini {
+class ListaCartellini {
   constructor() {
     this.search = document.getElementById('search_bar');
     this.search.addEventListener('search', () => { this.searchElement(); });
@@ -21,6 +21,14 @@ export default class ListaCartellini {
       this.result.push(resultTemp[key].ref);
     });
 
+    this.render();
+  }
+
+  remove(id, nome, descrizione) {
+    state.index.removeDoc({
+      id,
+      nome,
+      descrizione });
     this.render();
   }
 
@@ -53,3 +61,5 @@ export default class ListaCartellini {
     }
   }
 }
+
+module.exports = ListaCartellini;

@@ -27,13 +27,24 @@
     <div id="new_label" onclick="toggleParent(this, 'hidden')">
       <span>crea nuovo</span>
     </div>
-    <form>
+    <form id="form">
       <label>Nome</label>
+      <input type="text" name="nome" />
       <label>Requisiti</label>
+      <input type="text" name="requisiti" />
       <label>Fattura</label>
+      <input type="text" name="fattura" />
       <label>Descrizione</label>
+      <input type="text" name="descrizione" />
       <label>Colore</label>
+      <select name="colore">
+        <option value="bianco">bianco</option>
+        <option value="rosso">rosso</option>
+        <option value="verde">verde</option>
+        <option value="blu">blu</option>
+      </select>
       
+      <input type="submit" value="aggiungi" />
     </form>
   </div>
   <script src="./js/app.js"></script>

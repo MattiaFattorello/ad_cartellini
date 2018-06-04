@@ -1,19 +1,19 @@
-import state from './resources/app/js/state.js';
-import Cartellino from './resources/app/js/cartellino.js';
-import ListaCartellini from './resources/app/js/lista_cartellini.js';
-// import data from './data/data.json';
-
+const state = require.main.require('./js/state.js');
+const Cartellino = require.main.require('./js/cartellino.js');
+const ListaCartellini = require.main.require('./js/lista_cartellini.js');
 const PDFDocument = require('pdfkit');
 const fs = require('fs');
 const shell = require('electron').shell;
 const path = require('path');
-const dialog = require('electron');
+const dialog = require('electron').remote.dialog;
+const app = require('electron').remote.app;
+
 
 state.index.addField('nome');
 state.index.addField('descrizione');
 state.index.setRef('id');
 
-const data = {
+/* const data = {
   1: {
     id: 1,
     nome: 'cartellino 1',
@@ -48,7 +48,7 @@ for (let key = 1; key < 500; key++) {
     requisiti: element.requisiti,
     fattura: element.fattura,
   });
-}
+} */
 
 state.lista = new ListaCartellini();
 
@@ -94,13 +94,16 @@ document.getElementById('print').addEventListener('click', (e) => {
     e.preventDefault();
     return;
   }
-  dialog.showSaveDialog({}, (fileName) => {
+  dialog.showSaveDialog({ filters: [
+    { name: 'PDF', extensions: ['pdf'] },
+    { name: 'All Files', extensions: ['*'] }] }
+  , (fileName) => {
     const doc = new PDFDocument({
       autoFirstPage: false,
     });
-  
+
     doc.pipe(fs.createWriteStream(fileName));
-  
+
       // A4 size 595.28, 841.89
     const pageProperty = {
       margins: {
@@ -111,15 +114,15 @@ document.getElementById('print').addEventListener('click', (e) => {
       },
     };
     doc.addPage(pageProperty);
-  
-    doc.font('./src/fonts/Gabriola.ttf').fontSize(8);
+
+    doc.font(app.getAppPath() + '/src/fonts/Gabriola.ttf').fontSize(8);
     let i = 0;
-  
+
     let x = 30.64;
     let y = 18.63;
     let first = true;
     let oldColor = null;
-  
+
     state.selezionati.forEach((el) => {
           // 180x252 points = 2.5x3.5 inch
       const t = state.cartellini[el];
@@ -131,7 +134,7 @@ document.getElementById('print').addEventListener('click', (e) => {
           } else {
             x += 180;
           }
-  
+
           if (i % 9 === 0 || t.colore !== oldColor) {
             doc.addPage(pageProperty);
             x = 30.64;
@@ -143,37 +146,57 @@ document.getElementById('print').addEventListener('click', (e) => {
           doc.text(t.colore, 5, 5);
         }
         oldColor = t.colore;
-  
+
         const ox = 5;
         let oy = 5;
-  
-        doc.image('./src/img/logo.png', x + 147, y + 2, { width: 30, height: 34 });
-  
+
+        doc.image(app.getAppPath() + '/src/img/logo.png', x + 147, y + 2, { width: 30, height: 34 });
+
         const textOption = { width: 150, height: 5 };
         doc.text(t.fattura, x + ox, y + oy, textOption);
-  
+
         oy += 10;
         doc.text(t.requisiti, x + ox, y + oy, textOption);
-  
+
         oy += 15;
         const nameOption = {};
         nameOption.width = 170;
         nameOption.height = 30;
         nameOption.align = 'center';
         doc.fontSize(15).text(t.nome, x + ox, y + oy, nameOption);
-  
+
         oy += 25;
         textOption.width = 170;
         textOption.height = 190;
         doc.fontSize(8).text(t.descrizione, x + ox, y + oy, textOption);
-  
-        doc.image('./src/img/barra.png', x + 10, y + 240, { width: 160, height: 7 });
+
+        doc.image(app.getAppPath() + '/src/img/barra.png', x + 10, y + 240, { width: 160, height: 7 });
         doc.rect(x, y, 180, 252).stroke();
         i += 1;
       }
+
+      t.setQuantity(0);
     });
-  
+
     doc.end();
     shell.openItem(path.join(fileName));
   });
+});
+
+document.getElementById('form').addEventListener('submit', (e) => {
+  e.preventDefault();
+  const el = e.target.elements;
+  const c = new Cartellino({
+    nome: el.nome.value,
+    descrizione: el.descrizione.value,
+    // tipo: el.tipo.value,
+    colore: el.colore.value,
+    // campagna: el.campagna.value,
+    requisiti: el.requisiti.value,
+    fattura: el.fattura.value,
+  });
+  state.cartellini[c.id] = c;
+
+  e.target.reset();
+  state.lista.render();
 });

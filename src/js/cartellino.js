@@ -1,9 +1,9 @@
-import state from './resources/app/state.js';
+const state = require.main.require('./js/state.js');
 
-export default class Cartellino {
+class Cartellino {
   constructor(args) {
     if (args.id === undefined) {
-      state.next_id -= 1;
+      state.next_id += 1;
       this.id = state.next_id;
     } else {
       this.id = args.id;
@@ -81,6 +81,13 @@ export default class Cartellino {
     this.element.remove();
   }
 
+  remove() {
+    delete state.cartellini[this.id];
+    state.lista.remove(this.id, this.nome, this.descrizione);
+    this.setQuantity(0);
+    this.hide();
+  }
+
   render(int) {
     const order = int || 0;
 
@@ -106,8 +113,15 @@ export default class Cartellino {
       this.element.querySelector('[role="crt_minus"]').addEventListener('click', () => { this.minusOne(); });
       this.element.querySelector('[role="crt_plus5"]').addEventListener('click', () => { this.plusFive(); });
       this.element.querySelector('[role="crt_minus5"]').addEventListener('click', () => { this.minusFive(); });
+      this.element.querySelector('[role="crt_remove"]').addEventListener('click', () => {
+        const r = confirm('Stai rimuovendo il cartellino definitivamente, sei sicuro?');
+        if (r === true) {
+          this.remove();
+        }
+      });
       this.listenerDone = true;
     }
+
     return this.element;
   }
 
@@ -134,3 +148,5 @@ export default class Cartellino {
     }
   }
 }
+
+module.exports = Cartellino;

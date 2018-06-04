@@ -1,15 +1,14 @@
 const elasticlunr = require('elasticlunr');
+const app = require('electron').remote.app;
 const fs = require('fs');
 
-const state = {
+module.exports = {
   online: false,
   cartellini: {},
   selezionati: [],
   next_id: 0,
   lista: undefined,
   index: elasticlunr(() => {}),
-  cartellinoHtml: fs.readFileSync('./resources/app/src/html/cartellino.html', 'utf8'),
-  selezionatoHtml: fs.readFileSync('./resources/app/src/html/selezionato.html', 'utf8'),
+  cartellinoHtml: fs.readFileSync(app.getAppPath() + '/src/html/cartellino.html', 'utf8'),
+  selezionatoHtml: fs.readFileSync(app.getAppPath() + '/src/html/selezionato.html', 'utf8'),
 };
-
-export default state;

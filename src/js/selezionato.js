@@ -1,6 +1,6 @@
-import state from './resources/app/state.js';
+const state = require.main.require('./js/state.js');
 
-export default class Cartellino {
+class CartellinoS {
   constructor(args) {
     if (args.id === undefined) {
       state.next_id -= 1;
@@ -111,3 +111,5 @@ export default class Cartellino {
     return this.element;
   }
 }
+
+module.exports = CartellinoS;
