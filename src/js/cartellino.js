@@ -1,9 +1,14 @@
 const state = require.main.require('./js/state.js');
-
+const colore = [
+  'verde',
+  'blu',
+  'rosso',
+  'giallo',
+  'bianco'];
 class Cartellino {
   constructor(args) {
     if (args.id === undefined) {
-      state.next_id += 1;
+      state.next_id -= 1;
       this.id = state.next_id;
     } else {
       this.id = args.id;
@@ -11,7 +16,7 @@ class Cartellino {
     this.nome = args.nome || '';
     this.descrizione = args.descrizione || '';
     this.campagna = args.campagna || '';
-    this.colore = args.colore || '';
+    this.colore = (args.colore !== null && args.colore >= 0 && args.colore < colore.length) ? colore[args.colore] : (args.colore || '');
     this.tipo = args.tipo || '';
     this.requisiti = args.requisiti || '';
     this.fattura = args.fattura || '';
@@ -24,8 +29,8 @@ class Cartellino {
     this.listenerDone = false;
     state.index.addDoc({
       id: this.id,
-      nome: this.nome,
-      descrizione: this.descrizione,
+      nome: this.nome.toLowerCase(),
+      descrizione: this.descrizione.toLowerCase(),
     });
   }
 
@@ -106,6 +111,12 @@ class Cartellino {
     this.element.querySelector('[role="crt_qty"]').value = this.quantity;
 
     if (!this.listenerDone) {
+      if (this.element.classList) {
+        this.element.classList.add(this.colore);
+      } else {
+        this.element.className += ' ' + this.colore;
+      }
+
       this.element.querySelector('[role="crt_qty"]').addEventListener('keyup', (e) => {
         this.setQuantity(e.target.value);
       });
@@ -114,6 +125,7 @@ class Cartellino {
       this.element.querySelector('[role="crt_plus5"]').addEventListener('click', () => { this.plusFive(); });
       this.element.querySelector('[role="crt_minus5"]').addEventListener('click', () => { this.minusFive(); });
       this.element.querySelector('[role="crt_remove"]').addEventListener('click', () => {
+        // eslint-disable-next-line no-alert
         const r = confirm('Stai rimuovendo il cartellino definitivamente, sei sicuro?');
         if (r === true) {
           this.remove();

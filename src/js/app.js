@@ -7,48 +7,40 @@ const shell = require('electron').shell;
 const path = require('path');
 const dialog = require('electron').remote.dialog;
 const app = require('electron').remote.app;
-
+const net = require('electron').remote.net;
 
 state.index.addField('nome');
 state.index.addField('descrizione');
 state.index.setRef('id');
 
-/* const data = {
-  1: {
-    id: 1,
-    nome: 'cartellino 1',
-    requisiti: 'requisiti 1',
-    fattura: 'fattura',
-    tipo: 1,
-    colore: 1,
-    descrizione: 'bla bla bla',
-    campagna: 1,
-  },
-  2: {
-    id: 2,
-    nome: 'cartellino 2',
-    requisiti: 'requisiti 2',
-    fattura: 'fattura 2',
-    tipo: 1,
-    colore: 1,
-    descrizione: 'bla bla bla 2',
-    campagna: 1,
-  },
-};
-
-for (let key = 1; key < 500; key++) {
-  const element = data[(key % 2) + 1];
-  state.cartellini[key] = new Cartellino({
-    id: key,
-    nome: element.nome,
-    descrizione: element.descrizione,
-    tipo: element.tipo,
-    colore: element.colore,
-    campagna: element.campagna,
-    requisiti: element.requisiti,
-    fattura: element.fattura,
+function start() {
+  const request = net.request('http://arcanadomine.it/export_cartellini.php');
+  request.on('response', (response) => {
+    const buffer = [];
+    response.on('data', (chunk) => {
+      buffer.push(chunk);
+    });
+    response.on('end', () => {
+      const data = JSON.parse(Buffer.concat(buffer).toString());
+      data.forEach((el) => {
+        const c = new Cartellino({
+          id: el.CA001_ID,
+          nome: el.CA001_NOME,
+          descrizione: el.CA001_DESCRIZIONE,
+          tipo: el.CA001_FORMATO,
+          colore: el.CA001_TIPOLOGIA,
+          // campagna: el.campagna.value,
+          requisiti: el.CA001_REQUISITI,
+          fattura: el.CA001_FATTURA,
+        });
+        state.cartellini[c.id] = c;
+      });
+      state.lista.render();
+    });
   });
-} */
+  request.end();
+}
+start();
 
 state.lista = new ListaCartellini();
 
@@ -81,6 +73,7 @@ function toggle(el, className) {
   }
 }
 
+// eslint-disable-next-line no-unused-vars
 function toggleParent(el, className) {
   toggle(el.parentNode, className);
 }

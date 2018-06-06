@@ -16,7 +16,7 @@ class ListaCartellini {
       return;
     }
     this.result = [];
-    const resultTemp = state.index.search(searchKey, { expand: true });
+    const resultTemp = state.index.search(searchKey.toLowerCase(), { expand: true });
     Object.keys(resultTemp).forEach((key) => {
       this.result.push(resultTemp[key].ref);
     });
@@ -47,15 +47,15 @@ class ListaCartellini {
         }
         window.setTimeout(() => {
           this.list.appendChild(state.cartellini[key].render(order));
-        }, 500);
+        }, 2);
       });
     } else {
       Object.keys(state.cartellini).forEach((key) => {
         const order = this.result.indexOf(key);
         if (order < 0) {
-          window.setTimeout(() => { state.cartellini[key].hide(); }, 500);
+          window.setTimeout(() => { state.cartellini[key].hide(); }, 2);
         } else {
-          window.setTimeout(() => { state.cartellini[key].setOrder(order); }, 500);
+          window.setTimeout(() => { state.cartellini[key].setOrder(order); }, 2);
         }
       });
     }
