@@ -8,6 +8,7 @@
 <body>
   <div id="list_folder">
     <div id="total_list">
+      <button id="sort">SORT</button>
       <div id="search_container">
           <span class="icon"><i class="fa fa-search"></i></span>
           <input id="search_bar" type="search" incremental autosave results="5" placeholder="Search ..." />
@@ -35,15 +36,16 @@
       <label>Fattura</label>
       <input type="text" name="fattura" />
       <label>Descrizione</label>
-      <input type="text" name="descrizione" />
+      <textarea name="descrizione" ></textarea>
       <label>Colore</label>
-      <select name="colore">
-        <option value="bianco">bianco</option>
-        <option value="rosso">rosso</option>
-        <option value="verde">verde</option>
-        <option value="blu">blu</option>
+      <select name="colore">        
+        <option value="0">verde</option>
+        <option value="1">blu</option>
+        <option value="2">rosso</option>
+        <option value="3">giallo</option>
+        <option value="4">bianco</option>
       </select>
-      
+      <br>
       <input type="submit" value="aggiungi" />
     </form>
   </div>

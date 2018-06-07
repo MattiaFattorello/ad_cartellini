@@ -34,6 +34,8 @@ function start() {
           fattura: el.CA001_FATTURA,
         });
         state.cartellini[c.id] = c;
+        c.render();
+        c.plusOne();
       });
       state.lista.render();
     });
@@ -78,10 +80,6 @@ function toggleParent(el, className) {
   toggle(el.parentNode, className);
 }
 
-// const elunr = require('elasticlunr');
-// var Datastore = require('nedb'),
-// db = new Datastore({ filename: './data/datafile', autoload: true });
-
 document.getElementById('print').addEventListener('click', (e) => {
   if (state.selezionati.length < 1) {
     e.preventDefault();
@@ -115,8 +113,8 @@ document.getElementById('print').addEventListener('click', (e) => {
     let y = 18.63;
     let first = true;
     let oldColor = null;
-
-    state.selezionati.forEach((el) => {
+    const sel = state.selezionati;
+    sel.forEach((el) => {
           // 180x252 points = 2.5x3.5 inch
       const t = state.cartellini[el];
       for (let q = 0; q < t.quantity; q++) {
@@ -170,7 +168,7 @@ document.getElementById('print').addEventListener('click', (e) => {
 
       t.setQuantity(0);
     });
-
+    state.selezionati = [];
     doc.end();
     shell.openItem(path.join(fileName));
   });
@@ -191,5 +189,10 @@ document.getElementById('form').addEventListener('submit', (e) => {
   state.cartellini[c.id] = c;
 
   e.target.reset();
+  state.lista.render();
+});
+
+document.getElementById('sort').addEventListener('click', (e) => {
+  e.preventDefault();
   state.lista.render();
 });

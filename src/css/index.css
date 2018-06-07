@@ -60,15 +60,10 @@ h5{
     text-orientation: upright;
 }
 
-#to_print_list{
-    display: flex;
-    width:95%;
-    height:90%;
-}
-
 #print{
     width: 95%;
-    height: 5%;
+    height: 2%;
+    margin: 1px auto;
 }
 
 #form_new{
@@ -92,7 +87,7 @@ h5{
     background: #aaa;
 }
 
-#lista_cartellini{
+#lista_cartellini, #to_print_list{
     height:93%;
     width:95%;
     display: flex;
@@ -102,7 +97,27 @@ h5{
     align-items: flex-start;
 }
 
-.cartellino {
+#form {
+    text-align: center;
+    margin: 0 auto;
+}
+
+#form * {
+    display: block;
+    margin: 0 auto;
+    height: 100%;
+}
+
+#form input[type="text"], #form textarea{
+    width: 80%;
+}
+
+#form textarea{
+    height: 50%;
+}
+
+
+.cartellino, .selezionato {
     width: 15%;
     display:inline;
     margin: 5px auto;
@@ -140,28 +155,22 @@ h5{
 }
 
 .qty_modifier {
+    width: 100%;
+    margin-top: 20px;
+}
+
+button[role=crt_remove] {
     float: right;
-    width: 20%;
-    height: 95px;
-    margin: 2px;
 }
 
-.qty_modifier div{
-    width:70%;
+#sort{
     float: left;
+    margin: 5px;
 }
 
-.qty_modifier div:first-child{
-    width:30%;
-}
-
-.qty_modifier div button{
-    width:50%;
-}
-
-.qty_modifier div button, .qty_modifier div input[role=crt_qty], .qty_modifier div input[role=crt_qty]:focus, button[role=crt_remove] {
+button, .qty_modifier div input[role=crt_qty], .qty_modifier div input[role=crt_qty]:focus{
     -webkit-appearance: none;
-    margin:0 auto;
+    margin: 2%;
     background: #3b3b3b;
     color: #f4f4f4;
     border: none;
@@ -169,7 +178,7 @@ h5{
 }
 
 .qty_modifier div input[role=crt_qty] {
-    width: 100%;
+    width: 10%;
     background: #6f6f6f;
     padding-left: 2px;
 }

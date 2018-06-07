@@ -1,17 +1,16 @@
 <div class="cartellino" role="crt_element">
+    <button role="crt_remove">X</button>
+    <div class="qty_modifier">
+        <div>
+            <button role="crt_plus">+1</button><button role="crt_plus5">+5</button>
+            <input role="crt_qty" pattern="[0-9]|Backspace|Shift|Arrow(.*)|Delete|End|Home"/>
+            <button role="crt_minus">-1</button><button role="crt_minus5">-5</button>
+        </div>
+    </div>
     <div class="crt_details">
-        <button role="crt_remove">X</button><h4 role="crt_nome"></h4>
+        <h4 role="crt_nome"></h4>
         <h5 role="crt_requisiti"></h5>
         <h5 role="crt_fattura"></h5>
         <p role="crt_descrizione"></p>
-    </div>
-    <div class="qty_modifier">
-        <div>
-            <input role="crt_qty" pattern="[0-9]|Backspace|Shift|Arrow(.*)|Delete|End|Home"/>
-        </div>
-        <div>
-            <button role="crt_plus">+1</button><button role="crt_plus5">+5</button>
-            <button role="crt_minus">-1</button><button role="crt_minus5">-5</button>
-        </div>
     </div>
 </div>
