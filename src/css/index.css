@@ -87,6 +87,22 @@ h5{
     background: #aaa;
 }
 
+.expand {
+    display: none;
+}
+
+.hidden .expand {
+    display: block;
+}
+
+.contract {
+    display: block;
+}
+
+.hidden .contract {
+    display: none;
+}
+
 #lista_cartellini, #to_print_list{
     height:93%;
     width:95%;

@@ -1,6 +1,7 @@
 const state = require.main.require('./js/state.js');
 const Cartellino = require.main.require('./js/cartellino.js');
 const ListaCartellini = require.main.require('./js/lista_cartellini.js');
+const Link = require.main.require('./js/link.js');
 const PDFDocument = require('pdfkit');
 const fs = require('fs');
 const shell = require('electron').shell;
@@ -14,7 +15,7 @@ state.index.addField('descrizione');
 state.index.setRef('id');
 
 function start() {
-  const request = net.request('http://arcanadomine.it/export_cartellini.php');
+  const request = net.request(Link.cartellini);
   request.on('response', (response) => {
     const buffer = [];
     response.on('data', (chunk) => {
@@ -166,7 +167,7 @@ document.getElementById('print').addEventListener('click', (e) => {
         i += 1;
       }
 
-      t.setQuantity(0);
+      t.setQuantity(0, 'false');
     });
     state.selezionati = [];
     doc.end();

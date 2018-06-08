@@ -16,8 +16,9 @@
       <div id="lista_cartellini"></div>
     </div>    
     <div id="to_print" class="hidden" >
-      <div id="to_print_label" onclick="toggleParent(this, 'hidden')">
-        <span></span>
+      <div id="to_print_label" class="label" onclick="toggleParent(this, 'hidden')">
+        <svg class="icon expand" viewBox="0 0 32 32"><use xlink:href="#icon-expand"></use></svg>
+        <svg class="icon contract" viewBox="0 0 32 32"><use xlink:href="#icon-contract"></use></svg>
       </div>
       <div id="to_print_list"></div>
       <button id="print">print</button>
@@ -25,8 +26,9 @@
   </div>
   
   <div id="form_new" class="hidden">
-    <div id="new_label" onclick="toggleParent(this, 'hidden')">
-      <span></span>
+    <div id="new_label" class="label" onclick="toggleParent(this, 'hidden')">
+      <svg class="icon expand" viewBox="0 0 32 32"><use xlink:href="#icon-expand"></use></svg>
+      <svg class="icon contract" viewBox="0 0 32 32"><use xlink:href="#icon-contract"></use></svg>
     </div>
     <form id="form">
       <label>Nome</label>

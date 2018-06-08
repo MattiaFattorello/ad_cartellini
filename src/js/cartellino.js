@@ -66,9 +66,12 @@ class Cartellino {
     }
   }
 
-  setQuantity(qty) {
+  setQuantity(qty, emptyNow) {
+    const empty = emptyNow || 'true';
     if (qty < 1 && this.quantity > 0) {
-      state.selezionati.splice(state.selezionati.indexOf(this.id), 1);
+      if (empty === 'true') {
+        state.selezionati.splice(state.selezionati.indexOf(this.id), 1);
+      }
     }
     if (this.quantity === 0 && qty > 0) {
       state.selezionati.push(this.id);
